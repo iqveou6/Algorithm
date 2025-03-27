@@ -43,6 +43,7 @@ public class Main {
 		pq.add(new Node(start, 0));
 		while(!pq.isEmpty()) {
 			Node current = pq.poll();
+			if(current.index == end) return current.cost;
 			if (visited[current.index]) continue;
 			visited[current.index] = true;
 			for(int i = 0; i < graph.get(current.index).size(); i++) {
