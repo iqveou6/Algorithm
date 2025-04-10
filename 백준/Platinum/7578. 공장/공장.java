@@ -39,7 +39,7 @@ public class Main {
     	}
     	public void update(int node,int left,int right,int start,int end) {
     		propagation(node,left,right);
-    		if(left>=start&&end>=right) {
+    		if(start<=left&&end>=right) {
     			tree[node] -= 1;
     			return;
     		}else if(end<left||right<start){
