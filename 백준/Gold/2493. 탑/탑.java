@@ -15,26 +15,28 @@ public class Main {
             tops[i] = Integer.parseInt(st.nextToken());
         }
         Deque<Integer> stack = new ArrayDeque<>();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < n; i++) {
             if (stack.isEmpty()) {
-                System.out.println(0);
+                sb.append(0).append("\n");
                 stack.push(i);
             } else {
                 if (tops[i] < tops[stack.peek()]) {
-                    System.out.println(stack.peek() + 1);
+                    sb.append(stack.peek() + 1).append("\n");
                     stack.push(i);
                 } else {
                     while (tops[stack.peek()] < tops[i]) {
                         stack.pop();
                         if (stack.isEmpty()) break;
                     }
-                    if (stack.isEmpty()) System.out.println(0);
+                    if (stack.isEmpty()) sb.append(0).append("\n");
                     else {
-                        System.out.println(stack.peek() + 1);
+                        sb.append(stack.peek() + 1).append("\n");
                     }
                     stack.push(i);
                 }
             }
         }
+        System.out.println(sb.toString());
     }
 }
