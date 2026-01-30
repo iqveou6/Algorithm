@@ -1,10 +1,8 @@
-    import java.io.BufferedReader;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -12,23 +10,21 @@ public class Main {
         int n = Integer.parseInt(br.readLine());
         Deque<Integer> stack = new ArrayDeque<>();
         int current = 1;
-        List<String> answer = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < n; i++) {
             int number = Integer.parseInt(br.readLine());
             while (current <= number) {
                     stack.push(current);
-                    answer.add("+");
+                    sb.append("+").append("\n");
                     current++;
             }
             if (stack.peek() == number) {
-                answer.add("-");
+                sb.append("-").append("\n");
                 stack.pop();
             }
         }
         if (stack.isEmpty()) {
-            for (String s : answer) {
-                System.out.println(s);
-            }
+            System.out.println(sb);
         } else {
             System.out.println("NO");
         }
