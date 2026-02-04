@@ -27,11 +27,7 @@ public class Main {
                     int left = 0;
                     long height = arr[stack.peek()];
                     stack.pop();
-                    if (stack.peek() == -1) {
-                        left = 0;
-                    } else {
-                        left = stack.peek() + 1;
-                    }
+                    left = stack.peek() + 1;
                     int width = right - left + 1;
                     answer = Math.max(answer, height * width);
                 }
