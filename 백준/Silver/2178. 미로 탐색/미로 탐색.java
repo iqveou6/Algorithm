@@ -2,53 +2,46 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int[] dx = {-1, 0, 1, 0};
-    static int[] dy = {0, 1, 0, -1};
-    private static class Node {
-        int x, y;
-        public Node(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
+    static int[] dx = {-1, 1, 0, 0};
+    static int[] dy = {0, 0, -1, 1};
+    static int[][] visited;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] length = br.readLine().split(" ");
-
-        int n = Integer.parseInt(length[0]);
-        int m = Integer.parseInt(length[1]);
-
-        int[][] maze = new int[n][m];
-
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken()); //세로
+        int m = Integer.parseInt(st.nextToken()); //가로
+        int[][] board = new int[n][m];
+        visited = new int[n][m];
         for (int i = 0; i < n; i++) {
-            String temp = br.readLine();
+            String input = br.readLine();
             for (int j = 0; j < m; j++) {
-                maze[i][j] = Integer.parseInt(temp.charAt(j) + "");
+                board[i][j] = Integer.parseInt(input.charAt(j) + "");
             }
         }
-
-        Deque<Node> deque = new ArrayDeque<>();
-        deque.offer(new Node(0, 0));
-        while (!deque.isEmpty()) {
-            Node current = deque.poll();
-            for (int i = 0; i < 4; i++) {
-                int x = current.x + dx[i];
-                int y = current.y + dy[i];
-                if (x < 0 || x >= n || y < 0 || y >= m) {
+        Queue<int[]> queue = new ArrayDeque<>();
+        visited[0][0] = 1;
+        queue.add(new int[]{0, 0});
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            int x = cur[0];
+            int y = cur[1];
+            for (int k = 0; k < 4; k++) {
+                int nx = x + dx[k];
+                int ny = y + dy[k];
+                if (0 > nx || nx >= n || 0 > ny || ny >= m) {
                     continue;
                 }
-                if (maze[x][y] == 1) {
-                    Node node = new Node(x, y);
-                    deque.offer(node);
-                    maze[x][y] = maze[current.x][current.y] + 1;
+                if (board[nx][ny] == 1 && visited[nx][ny] == 0) {
+                    visited[nx][ny] = visited[x][y] + 1;
+                    queue.offer(new int[]{nx, ny});
                 }
             }
         }
-
-        System.out.println(maze[n-1][m-1]);
+        System.out.println(visited[n - 1][m - 1]);
     }
 }
