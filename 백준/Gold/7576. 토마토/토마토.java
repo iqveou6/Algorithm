@@ -19,16 +19,16 @@ public class Main {
                 if (x < 0 || x >= box.length || y < 0 || y >= box[0].length) {
                     continue;
                 }
-                if (box[x][y] == 0) { //익은 토마토의 상하좌우에 익지않은 토마토가 있는지 확인
+                if (box[x][y] == 0) {
                     box[x][y] = 1;
-                    queue.offer(new int[] {x, y, tomato[2] + 1}); //익은 토마토에 영향을 받아 하루가 지난 후 익게 되기 때문에 하루를 더해 저장
+                    queue.offer(new int[] {x, y, tomato[2] + 1});
                 }
             }
         }
 
         for (int i = 0; i < box.length; i++) {
             for (int j = 0; j < box[0].length; j++) {
-                if (box[i][j] == 0) { //창고에 토마토가 모두 익지 못하는 상황에는 -1 출력
+                if (box[i][j] == 0) {
                     return -1;
                 }
             }
