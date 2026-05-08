@@ -1,25 +1,33 @@
-import java.util.*;
+import java.util.*; 
 
 class Solution {
-    public void dfs(int n, int node, boolean[] visited, int[][] computers) {
-        visited[node] = true;
-        
-        for(int i = 0; i < n; i++) {
-            if (node == i) continue;
-            if (computers[node][i] == 0) continue;
-            if (visited[i] == true) continue;
-            dfs(n, i, visited, computers);
+    List<List<Integer>> graph = new ArrayList<>();
+    public void dfs(int i, boolean[] visited) {
+        for (int next : graph.get(i)) {
+            if (!visited[next]) {
+                visited[next] = true;
+                dfs(next, visited);
+            }
         }
     }
     
     public int solution(int n, int[][] computers) {
-        
         int answer = 0;
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i != j && computers[i][j] == 1) {
+                    graph.get(i).add(j);
+                }
+            }
+        }
         boolean[] visited = new boolean[n];
-        
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             if (!visited[i]) {
-                dfs(n, i, visited, computers);
+                visited[i] = true;
+                dfs(i, visited);
                 answer++;
             }
         }
