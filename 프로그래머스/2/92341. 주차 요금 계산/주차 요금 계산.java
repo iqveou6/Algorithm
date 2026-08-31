@@ -2,44 +2,41 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] fees, String[] records) {
-        int[] answer;
-        Map<String, Integer> map = new HashMap<>();
-        Map<String, Integer> total = new HashMap<>();
-        Map<String, Integer> cost = new HashMap<>();
-        for(String record : records) {
+        // 차량 번호 기준 오름차순 자동 정렬
+        Map<String, Integer> totalTime = new TreeMap<>();
+        Map<String, Integer> inTime = new HashMap<>();
+
+        for (String record : records) {
             String[] input = record.split(" ");
             String[] time = input[0].split(":");
-            int hour = Integer.parseInt(time[0]);
-            int min = Integer.parseInt(time[1]);
-            int cur = hour * 60 + min;
+            int cur = Integer.parseInt(time[0]) * 60 + Integer.parseInt(time[1]);
+            String car = input[1];
+
             if (input[2].equals("IN")) {
-                map.put(input[1], cur);
+                inTime.put(car, cur);
             } else {
-                total.put(input[1], total.getOrDefault(input[1], 0) + cur - map.get(input[1]));
-                map.remove(input[1]);
+                totalTime.put(car, totalTime.getOrDefault(car, 0) + cur - inTime.remove(car));
             }
         }
-        if (map.size() > 0) {
-            for (String key : map.keySet()) {
-                total.put(key, total.getOrDefault(key, 0) + 1439 - map.get(key));
-            }
+
+        // 미출차 차량 23:59 (1439분) 일괄 처리
+        for (String car : inTime.keySet()) {
+            totalTime.put(car, totalTime.getOrDefault(car, 0) + 1439 - inTime.get(car));
         }
-        for (String key: total.keySet()) {
-            int fee = 0;
-            if (total.get(key) >= fees[0]) {
-                fee = fees[1] + (int)Math.ceil((double)(total.get(key)-fees[0]) / fees[2])* fees[3];
-                
+
+        // 요금 계산 및 반환 (TreeMap 순회 시 이미 차량 번호 오름차순 정렬 상태)
+        int[] answer = new int[totalTime.size()];
+        int idx = 0;
+        for (int time : totalTime.values()) {
+            if (time <= fees[0]) {
+                answer[idx++] = fees[1];
             } else {
-                fee = fees[1];
+                // 정수 올림 나눗셈: (A + B - 1) / B
+                int extraUnits = (time - fees[0] + fees[2] - 1) / fees[2];
+                answer[idx++] = fees[1] + extraUnits * fees[3];
             }
-            cost.put(key, fee);
         }
-        String[] keys = cost.keySet().toArray(new String[0]);
-        Arrays.sort(keys);
-        answer = new int[keys.length];
-        for (int i = 0; i < answer.length; i++) {
-            answer[i] = cost.get(keys[i]);
-        }
+
         return answer;
     }
 }
