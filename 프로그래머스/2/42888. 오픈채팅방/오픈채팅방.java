@@ -21,9 +21,7 @@ class Solution {
         }
         String[] answer = new String[index];
         for (int i = 0; i < answer.length; i++) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(map.get(chattingroom[i][0])).append(chattingroom[i][1]);
-            answer[i] = sb.toString();
+            answer[i] = map.get(chattingroom[i][0]) + chattingroom[i][1];
         }
         return answer;
     }
