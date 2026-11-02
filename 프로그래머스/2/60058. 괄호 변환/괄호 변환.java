@@ -2,8 +2,7 @@ import java.util.*;
 
 class Solution {
     public String solution(String p) {
-        if (p == "") return "";
-        String answer = "";
+        if (p.equals("")) return "";
         Deque<Character> stack = new ArrayDeque<>();
         String u = "";
         String v = "";
