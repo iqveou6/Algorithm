@@ -1,46 +1,48 @@
+import java.util.*;
+
 class Solution {
-    public Boolean checkCorrect(String s) {
+    public String solution(String p) {
+        if (p == "") return "";
+        String answer = "";
+        Deque<Character> stack = new ArrayDeque<>();
+        String u = "";
+        String v = "";
         int count = 0;
-        for (int i=0;i<s.length();i++) {
-            if (s.charAt(i) == '(') count++;
-            else count--;
+        for (int i = 0; i < p.length(); i++) {
+            if (p.charAt(i) == ')') {
+                count--;
+            } else count++;
+            if (count == 0) {
+                u = p.substring(0, i+1);
+                v = p.substring(i+1, p.length());
+                break;
+            }
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        if (isRight(u)) {
+            return sb.append(u).append(solution(v)).toString();
+        } else {
+            sb.append("(").append(solution(v)).append(")");
+            u = u.substring(1, u.length()-1);
+            for (char c : u.toCharArray()) {
+                if (c == '(') {
+                    sb.append(")");
+                } else sb.append("(");
+            }
+        }
+        return sb.toString();
+    }
+    
+    public boolean isRight(String s) {
+        int count = 0;
+        for (char c : s.toCharArray()) {
+            if (c == '(') {
+                count++;
+            } else count--;
             if (count < 0) return false;
         }
+        if (count != 0) return false;
         return true;
-    }
-    
-    public int cutString(String s) {
-        int count = 0;
-        int index = 0;
-        for (int i=0;i<s.length();i++) {
-            if (s.charAt(i) == '(') count++;
-            else count--;
-            if (count==0) {
-                return i;
-            }
-        }
-        return 0;
-    }
-    
-    
-    
-    public String solution(String p) {
-        String answer = "";
-        if (p.equals("")) return p;
-        int index = cutString(p);
-        String u = p.substring(0, index+1);
-        String v = p.substring(index+1);
-        
-        if (checkCorrect(u)) {
-            answer = u + solution(v);
-        } else {
-            System.out.println(u);
-            answer = "(" + solution(v) + ")";
-            for (int i = 1; i < u.length()-1; i++) {
-                if (u.charAt(i) == '(') answer += ')';
-                else answer += '(';
-            }
-        }
-        return answer;
     }
 }
