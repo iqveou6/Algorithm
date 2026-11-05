@@ -11,7 +11,6 @@ class Solution {
         for (int i = 0; i < n; i++) {
             count[i] = i+1;
         }
-        if (n == 1) return new int[] {1};
         int x = 0; int y = 0;
         int dir = 0;
         for (int i = 1; i <= n * (n+1)/2; i++) {
@@ -21,6 +20,7 @@ class Solution {
             }
             x += dx[dir];
             y += dy[dir];
+            if (i == n * (n+1)/2) break;
             if (snail[x][y] != 0) {
                 x -= dx[dir];
                 y -= dy[dir];
@@ -28,6 +28,7 @@ class Solution {
                 x += dx[dir];
                 y += dy[dir];
             }
+            
         }
         int index = 0;
         for (int i = 0; i < n; i++) {
